@@ -1,0 +1,142 @@
+// Diagrama de Classes UML — SaborJá (Etapa 1)
+// Gerar imagem:  dot -Tpng -Gdpi=150 docs/diagrama-classes.dot -o docs/diagrama-classes.png
+digraph SaborJa {
+  graph [rankdir=TB, splines=ortho, nodesep=0.7, ranksep=0.9, fontname="Helvetica", bgcolor="white", pad=0.3,
+         label=<<B>SaborJá — Diagrama de Classes UML</B>>, labelloc=t, fontsize=20];
+  node  [shape=plain, fontname="Helvetica", fontsize=11];
+  edge  [fontname="Helvetica", fontsize=10, arrowhead=none, color="#444444", fontcolor="#222222"];
+
+  // ============ CLASSES ============
+  Usuario [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#FFFBEA">
+    <TR><TD BGCOLOR="#F6D365"><B>Usuario</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">- id: Long<BR/>- nome: String<BR/>- email: String {unique}<BR/>- senhaHash: String<BR/>- telefone: String<BR/>- perfil: Perfil<BR/>- ativo: Boolean<BR/>- criadoEm: LocalDateTime</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">+ adicionarEndereco(e: Endereco): void<BR/>+ removerEndereco(e: Endereco): void<BR/>+ desativar(): void</TD></TR>
+  </TABLE>>];
+
+  Endereco [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#FFFBEA">
+    <TR><TD BGCOLOR="#F6D365"><B>Endereco</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">- id: Long<BR/>- logradouro: String<BR/>- numero: String<BR/>- complemento: String<BR/>- bairro: String<BR/>- cidade: String<BR/>- uf: String<BR/>- cep: String<BR/>- principal: Boolean</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">+ formatar(): String</TD></TR>
+  </TABLE>>];
+
+  Entregador [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#FFFBEA">
+    <TR><TD BGCOLOR="#F6D365"><B>Entregador</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">- id: Long<BR/>- cpf: String {unique}<BR/>- veiculo: TipoVeiculo<BR/>- placa: String<BR/>- disponivel: Boolean</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">+ alterarDisponibilidade(d: boolean): void</TD></TR>
+  </TABLE>>];
+
+  Restaurante [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#FFFBEA">
+    <TR><TD BGCOLOR="#F6D365"><B>Restaurante</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">- id: Long<BR/>- nomeFantasia: String<BR/>- cnpj: String {unique}<BR/>- telefone: String<BR/>- taxaEntrega: BigDecimal<BR/>- tempoMedioPreparoMin: Integer<BR/>- aberto: Boolean</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">+ abrir(): void<BR/>+ fechar(): void<BR/>+ adicionarProduto(p: Produto): void<BR/>+ removerProduto(p: Produto): void<BR/>+ adicionarCategoria(c: Categoria): void<BR/>+ removerCategoria(c: Categoria): void</TD></TR>
+  </TABLE>>];
+
+  Categoria [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#FFFBEA">
+    <TR><TD BGCOLOR="#F6D365"><B>Categoria</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">- id: Long<BR/>- nome: String {unique}<BR/>- descricao: String</TD></TR>
+    <TR><TD> </TD></TR>
+  </TABLE>>];
+
+  Produto [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#FFFBEA">
+    <TR><TD BGCOLOR="#F6D365"><B>Produto</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">- id: Long<BR/>- nome: String<BR/>- descricao: String<BR/>- preco: BigDecimal<BR/>- disponivel: Boolean<BR/>- imagemUrl: String</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">+ alterarDisponibilidade(d: boolean): void</TD></TR>
+  </TABLE>>];
+
+  Pedido [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#FFFBEA">
+    <TR><TD BGCOLOR="#F6D365"><B>Pedido</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">- id: Long<BR/>- dataHora: LocalDateTime<BR/>- status: StatusPedido<BR/>- subtotal: BigDecimal<BR/>- taxaEntrega: BigDecimal<BR/>- valorTotal: BigDecimal<BR/>- observacao: String</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">+ adicionarItem(p: Produto, qtd: int, obs: String): ItemPedido<BR/>+ calcularTotal(): BigDecimal<BR/>+ definirPagamento(p: Pagamento): void<BR/>+ atualizarStatus(novo: StatusPedido): void<BR/>+ atribuirEntregador(e: Entregador): void<BR/>+ cancelar(): void</TD></TR>
+  </TABLE>>];
+
+  ItemPedido [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#FFFBEA">
+    <TR><TD BGCOLOR="#F6D365"><B>ItemPedido</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">- id: Long<BR/>- quantidade: Integer<BR/>- precoUnitario: BigDecimal<BR/>- observacao: String</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">+ calcularSubtotal(): BigDecimal</TD></TR>
+  </TABLE>>];
+
+  Pagamento [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#FFFBEA">
+    <TR><TD BGCOLOR="#F6D365"><B>Pagamento</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">- id: Long<BR/>- forma: FormaPagamento<BR/>- status: StatusPagamento<BR/>- valor: BigDecimal<BR/>- dataPagamento: LocalDateTime<BR/>- codigoTransacao: String</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">+ aprovar(codigo: String): void<BR/>+ recusar(): void<BR/>+ estornar(): void</TD></TR>
+  </TABLE>>];
+
+  Avaliacao [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#FFFBEA">
+    <TR><TD BGCOLOR="#F6D365"><B>Avaliacao</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">- id: Long<BR/>- nota: Integer {1..5}<BR/>- comentario: String<BR/>- dataAvaliacao: LocalDateTime</TD></TR>
+    <TR><TD> </TD></TR>
+  </TABLE>>];
+
+  // ============ ENUMERAÇÕES ============
+  node [fontsize=10];
+  Perfil [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="3" BGCOLOR="#EEF4FF">
+    <TR><TD BGCOLOR="#C9DAF8">«enumeration»<BR/><B>Perfil</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">CLIENTE<BR/>RESTAURANTE<BR/>ENTREGADOR<BR/>ADMIN</TD></TR>
+  </TABLE>>];
+  TipoVeiculo [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="3" BGCOLOR="#EEF4FF">
+    <TR><TD BGCOLOR="#C9DAF8">«enumeration»<BR/><B>TipoVeiculo</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">MOTO<BR/>BICICLETA<BR/>CARRO</TD></TR>
+  </TABLE>>];
+  StatusPedido [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="3" BGCOLOR="#EEF4FF">
+    <TR><TD BGCOLOR="#C9DAF8">«enumeration»<BR/><B>StatusPedido</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">CRIADO<BR/>CONFIRMADO<BR/>EM_PREPARO<BR/>SAIU_PARA_ENTREGA<BR/>ENTREGUE<BR/>CANCELADO</TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">+ permiteCancelamento(): boolean<BR/>+ podeAvancarPara(novo: StatusPedido): boolean</TD></TR>
+  </TABLE>>];
+  FormaPagamento [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="3" BGCOLOR="#EEF4FF">
+    <TR><TD BGCOLOR="#C9DAF8">«enumeration»<BR/><B>FormaPagamento</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">PIX<BR/>CARTAO_CREDITO<BR/>CARTAO_DEBITO<BR/>DINHEIRO</TD></TR>
+  </TABLE>>];
+  StatusPagamento [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="3" BGCOLOR="#EEF4FF">
+    <TR><TD BGCOLOR="#C9DAF8">«enumeration»<BR/><B>StatusPagamento</B></TD></TR>
+    <TR><TD ALIGN="LEFT" BALIGN="LEFT">PENDENTE<BR/>APROVADO<BR/>RECUSADO<BR/>ESTORNADO</TD></TR>
+  </TABLE>>];
+
+  // ============ LAYOUT ============
+  { rank=same; Usuario; Entregador; Perfil; TipoVeiculo; }
+  { rank=same; Endereco; Restaurante; Categoria; }
+  { rank=same; Pedido; Produto; }
+  { rank=same; ItemPedido; Pagamento; Avaliacao; }
+  { rank=same; StatusPedido; FormaPagamento; StatusPagamento; }
+
+  // ============ RELACIONAMENTOS ============
+  // Associações simples (multiplicidade: taillabel = lado de origem, headlabel = lado de destino)
+  Usuario -> Endereco    [taillabel="0..1", headlabel="0..*", xlabel="possui"];
+  Usuario -> Entregador  [taillabel="1", headlabel="0..1", xlabel="atua como"];
+  Usuario -> Restaurante [taillabel="1", headlabel="0..*", xlabel="é responsável"];
+  Usuario -> Pedido      [taillabel="1", headlabel="0..*", xlabel="realiza"];
+  Restaurante -> Endereco [taillabel="0..1", headlabel="1", xlabel="localiza-se"];
+  Restaurante -> Categoria [taillabel="0..*", headlabel="1..*", xlabel="classificado em"];
+  Restaurante -> Pedido  [taillabel="1", headlabel="0..*", xlabel="recebe"];
+  Endereco -> Pedido     [taillabel="1", headlabel="0..*", xlabel="destino de"];
+  Entregador -> Pedido   [taillabel="0..1", headlabel="0..*", xlabel="entrega"];
+  Produto -> ItemPedido  [taillabel="1", headlabel="0..*", xlabel="referenciado em"];
+  Pedido -> Avaliacao    [taillabel="1", headlabel="0..1", xlabel="recebe"];
+
+  // Composições (losango preenchido no todo)
+  Restaurante -> Produto  [dir=back, arrowtail=diamond, taillabel="1", headlabel="0..*", xlabel="cardápio"];
+  Pedido -> ItemPedido    [dir=back, arrowtail=diamond, taillabel="1", headlabel="1..*", xlabel="contém"];
+  Pedido -> Pagamento     [dir=back, arrowtail=diamond, taillabel="1", headlabel="1", xlabel="pago por"];
+
+  // Dependências de enumerações
+  edge [style=dashed, arrowhead=vee, color="#7A8CA8", xlabel=""];
+  Usuario -> Perfil;
+  Entregador -> TipoVeiculo;
+  Pedido -> StatusPedido;
+  Pagamento -> FormaPagamento;
+  Pagamento -> StatusPagamento;
+}
